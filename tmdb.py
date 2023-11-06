@@ -1,7 +1,5 @@
 import requests
 import pandas as pd
-import numpy as np
-
 
 url = 'https://api.themoviedb.org/3/'
 
@@ -47,10 +45,15 @@ class Tmdb():
         full_details : default is False. When = False, only returns relevant data.
         """
         url = f'https://api.themoviedb.org/3/movie/{id}?language=en-US"'
-
+      
+        headers = {
+                "accept": "application/json",
+                "Authorization": self.key
+        }
         
-        response = requests.get(url, headers=header).json()
+        response = requests.get(url, headers=headers).json()
         response = pd.Series(response)
+      
         short = response.drop(['backdrop_path','belongs_to_collection','homepage','imdb_id','id','original_language','overview','poster_path','production_companies','production_countries','status','tagline','title','video'])
 
         short['genres'] = short['genres'][0]['name']
