@@ -1,4 +1,5 @@
 import requests
+from collections import Counter
 import pandas as pd
 
 
@@ -37,7 +38,7 @@ class Tmdb():
                 id_list.append(_['id'])
         return id_list
     
-    def movie_details(self, id : int, full_details = False):
+    def movie_details(self, id : int, drop_col = []):
         """
         returns a pd.Series consisting of the movie corresponding to the given id
 
@@ -51,37 +52,92 @@ class Tmdb():
                 "accept": "application/json",
                 "Authorization": self.key
             }
+        drop_col += ['backdrop_path','adult','imdb_id','video']
+        response = requests.get(url, headers=headers).json()
+        response = pd.Series(response)
+        
+        response['keywords'] = self.get_keywords(id)
+        response['cast'] = self.get_cast(id)    
+        response['directors'] = self.get_director(id)
+
+        response = response.drop(drop_col)
+       
+        return response
+        
+        
+    def get_cast(self,id, num_casts = 5):
+        
+        url = f"https://api.themoviedb.org/3/movie/{id}/credits?language=en-US"
+
+        headers = {
+                "accept": "application/json",
+                "Authorization": self.key
+            }
+        response = requests.get(url, headers=headers).json()
+        response = response['cast']
+        response = sorted(response, key = lambda x: x['popularity'], reverse=True)
+
+        cast_name = []
+       
+        for _ in range(num_casts):
+            cast_name.append(response[_]['name'])
+            # cast_popularity.append(response[_]['popularity'])
+            
+        return cast_name
+    
+    def get_director(self,id):
+        
+        url = f"https://api.themoviedb.org/3/movie/{id}/credits?language=en-US"
+
+        headers = {
+                "accept": "application/json",
+                "Authorization": self.key
+            }
+        response = requests.get(url, headers=headers).json()
+        crew = response['crew']
+
+        directors = []
+        # cast_popularity =[]
+        for _ in crew:
+            if _['job'] == 'Director':
+                directors.append(_['name'])            
+        return directors
+
+    def get_keywords(self, id):
+
+        url = f"https://api.themoviedb.org/3/movie/{id}/keywords"
+
+        headers = {
+                "accept": "application/json",
+                "Authorization": self.key
+            }
         
         response = requests.get(url, headers=headers).json()
-        response = pd.Series(response).drop(['backdrop_path', 'adult'])
+        response = response['keywords']
         
+        keywords = []
+        for _ in response:
+            keywords.append(_['name'])
 
-        ## drop unnecessary features when full_details = False
-        short = response.drop(['homepage','imdb_id','id','original_language','overview','poster_path','production_companies','production_countries','status','tagline','title','video'])
-        
-        #short['genres'] = short['genres'][0]['name']
-        #short['spoken_languages'] = short['spoken_languages'][0]['english_name']
+        return keywords
 
-        if full_details:
-            return response
-        else:
-            return short
 
-    def movie_df(self, page : int, category = 'now_playing', full_details = False):
+
+    def movie_df(self, page : int, category = 'now_playing', drop_col =[]):
         columns = [f'{i}' for i in range(page * 19)]
 
         df = pd.DataFrame(columns=columns)
 
         id_list = self.movie_id(page, category)
         
-        movie_series = [self.movie_details(id) for id in id_list]
+        movie_series = [self.movie_details(id, drop_col=drop_col) for id in id_list]
         
         df = pd.concat(movie_series, axis=1)
         return df.transpose()
     
-    def movies_df(self, num = 19, category ='top_rated', full_details = False):
+    def movies_df(self, num = 19, category ='top_rated', drop_col =[]):
         page = num //19
-        return self.movie_df(page, category = category, full_details=full_details)
+        return self.movie_df(page, category = category, drop_col = drop_col)
 
-# tm = Tmdb(key)
-# print(tm.movies_df(300))
+#tm = Tmdb(key)
+#print(tm.movie_details(123))
