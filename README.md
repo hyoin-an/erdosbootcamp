@@ -11,7 +11,7 @@ We first considered histograms of six major quantitative variables to understand
 
 ## Data Cleaning & Feature Engineering
 
-We gathered the dataset from TMDB by utilizing TMDB API. There are about 6500 movies available with valid revenue data. Features include genres, budget, production countries/companies, release date, cast, popularity, etc. 
+We gathered the dataset from TMDB by utilizing TMDB API. There are about 6500 movies available with valid revenue data. Features include genres, budget, production countries/companies, release date, cast, popularity, etc. Our code for collecting the data is [here](data/tmdb.py).
 
 For genres, the raw data contains a column of lists of genres. We added a column for each genre whose row stores a boolean indicating the genre of the corresponding movie. For the cast, there are a total of 130,005 actors/actresses. 
 ![genre](Figure/genres.png)
