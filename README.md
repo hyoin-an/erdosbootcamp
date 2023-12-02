@@ -37,7 +37,7 @@ While our objective is to forecast revenue for future movies, we opted for regul
 ## Results
 Our model had better performance than the benchmark model, by having lower RMSE (1.3118) than the benchmark model (1.6552).
 
-The variable importance plot highlights key factors crucial to model performance, with the top variables identified as follows: budget, vote count in TMDB, movie language, genre (Horror), and popularity measured by TMDB.
+The variable importance plot highlights key factors crucial to model performance, with the top variables identified as follows: budget, vote count in TMDB, movie language, genre (Horror), and movie popularity measured by TMDB.
 ![Variance Importance plot](Figure/Vimportance.png)
 
 
