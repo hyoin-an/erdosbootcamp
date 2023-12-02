@@ -16,10 +16,15 @@ We gathered the dataset from TMDB by utilizing TMDB API. There are about 6500 mo
 For genres, the raw data contains a column of lists of genres. We added a column for each genre whose row stores a boolean indicating the genre of the corresponding movie. For the cast, there are a total of 130,005 actors/actresses. 
 ![genre](Figure/genres.png)
 
-We added a column for each actor/actress so that each column indicates whether the actor/actress appears in the movie using boolean. A similar transformation is applied to the directors data.
+We added a column for each actor/actress so that each column indicates whether the actor/actress appears in the movie using boolean. A similar transformation is applied to the directors data. Since there are so many casting members and directors, we then have applied PCA to cast and directors and used 10 principal components in the model.
 ![case](Figure/cast.png)
 
-For the release date, the raw data is in datetime format. We have normalized them by mapping them linearly onto [-1,1] so the oldest movie has the value -1 and the most recent movie has the value 1. We have also added the month column indicating the month of the release date of the movie. For the production countries, we have added a column indicating whether the movie is produced in the US or not. As a result, the preprocessed dataset contains ten key features: budget, popularity, runtime, video, vote average, vote count, number of genres, collection, homepage, release date, 59 dummy variables: genre (15), language (32), and month (12). Finally, since there are so many casting members and directors, we have applied PCA to cast and directors using 10 principal components.
+For the release date, the raw data is in datetime format. We have normalized them by mapping them linearly onto [-1,1] so the oldest movie has the value -1 and the most recent movie has the value 1. We have also added the month column indicating the month of the release date of the movie. For the production countries, we have added a column indicating whether the movie is produced in the US or not. 
+
+As a result, the preprocessed dataset contains
+* key features: budget, popularity, runtime, video, vote average, vote count, number of genres, collection, homepage, release date,
+* 59 dummy variables: genre (15), language (32), and month (12).
+* 10 principal components: cast, directors
 
 ## Method
 We partitioned the dataset into training (n = 4800, movies from 1902-04-17 to 2017-09-22) and test (n = 747, movies 2017-09-22 to 2023-10-25) sets. We conducted model training and parameter-tuning exclusively on the training set. Utilizing the XGBoost model framework, we refined hyperparameters through 5-fold cross-validation. As a benchmark, we chose a naive model estimating log revenue using log(budget + 1). The key performance indicator for the model is the root mean squared error (RMSE). 
