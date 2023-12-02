@@ -17,10 +17,13 @@ For the release date, the raw data is in datetime format. We have normalized the
 We partitioned the dataset into training (n = 4800, movies from 1902-04-17 to 2017-09-22) and test (n = 747, movies 2017-09-22 to 2023-10-25) set. We conducted model training and parameter-tuning exclusively on the training set. Utilizing the XGBoost model framework, we refined hyperparameters through 5-fold cross-validation. As a benchmark, we chose a naive model estimating log revenue using log(budget + 1). The key performance indicator for the model is the root mean squared error (RMSE). 
 
 ## Results
-RMSE (Our model): 1.3118
-RMSE (Benchmark): 1.6552
+Our model had better performance than the benchmark model, by having lower RMSE (1.3118) than the benchmark model (1.6552).
 
 The variable importance plot highlights key factors crucial to model performance, with the top variables identified as follows: budget, vote count in TMDB, movie language, genre (Horror), and popularity measured by TMDB.
+![Variance Importance plot](Figure/Vimportance.png)
+
 
 ## Discussion
-In future work, movie title and overview information could prove beneficial for enhancing predictive accuracy. Additionally, exploring alternative methods of feature engineering for cast and director information may offer valuable insights.
+We believe that this model has the potential to serve diverse applications, including the marketing of a film with projected revenue surpassing actual earnings.
+
+In future work, movie titles and overview information could prove beneficial for enhancing predictive accuracy. Additionally, exploring alternative methods of feature engineering for cast and director information may offer valuable insights.
