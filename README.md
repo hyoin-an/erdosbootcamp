@@ -31,7 +31,8 @@ We partitioned the dataset into
 * training (n = 4800, movies from 1902-04-17 to 2017-09-22); and
 * test (n = 747, movies 2017-09-22 to 2023-10-25) sets.
 
-We conducted model training and parameter-tuning exclusively on the training set. Utilizing the XGBoost model framework, we refined hyperparameters through 5-fold cross-validation. While our objective is to forecast revenue for future movies, we opted for regular cross-validation over time-series cross-validation. This decision was based on the observation that regular cross-validation yielded a lower Root Mean Square Error (RMSE) for the validation set compared to the latter. As a benchmark, we chose a naive model estimating log revenue using log(budget + 1). The key performance indicator for the model is the root mean squared error (RMSE). 
+We conducted model training and parameter-tuning exclusively on the training set. Utilizing the XGBoost model framework, we refined hyperparameters through 5-fold cross-validation. The key performance indicator for the model is the root mean squared error (RMSE). 
+While our objective is to forecast revenue for future movies, we opted for regular cross-validation over time-series cross-validation. This decision was based on the observation that regular cross-validation yielded a lower RMSE for the validation set compared to the latter. As a benchmark, we chose a naive model estimating log revenue using log(budget + 1). 
 
 ## Results
 Our model had better performance than the benchmark model, by having lower RMSE (1.3118) than the benchmark model (1.6552).
