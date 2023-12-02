@@ -13,7 +13,12 @@ We first considered histograms of six major quantitative variables to understand
 
 We gathered the dataset from TMDB by utilizing TMDB API. There are about 6500 movies available with valid revenue data. Features include genres, budget, production countries/companies, release date, cast, popularity, etc. 
 
-For genres, the raw data contains a column of lists of genres. We added a column for each genre whose row stores a boolean indicating the genre of the corresponding movie. For the cast, there are a total of 130,005 actors/actresses. We added a column for each actor/actress so that each column indicates whether the actor/actress appears in the movie using boolean. A similar transformation is applied to the directors data.
+For genres, the raw data contains a column of lists of genres. We added a column for each genre whose row stores a boolean indicating the genre of the corresponding movie. For the cast, there are a total of 130,005 actors/actresses. 
+![TMDB](Figure/genre.png)
+
+We added a column for each actor/actress so that each column indicates whether the actor/actress appears in the movie using boolean. A similar transformation is applied to the directors data.
+![TMDB](Figure/cast.png)
+
 For the release date, the raw data is in datetime format. We have normalized them by mapping them linearly onto [-1,1] so the oldest movie has the value -1 and the most recent movie has the value 1. We have also added the month column indicating the month of the release date of the movie. For the production countries, we have added a column indicating whether the movie is produced in the US or not. As a result, the preprocessed dataset contains ten key features: budget, popularity, runtime, video, vote average, vote count, number of genres, collection, homepage, release date, 59 dummy variables: genre (15), language (32), and month (12). Finally, since there are so many casting members and directors, we have applied PCA to cast and directors using 10 principal components.
 
 ## Method
